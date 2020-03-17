@@ -78,9 +78,14 @@
                 return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
             },
             isCorrectAnswer(expected, actual) {
-                expected = this.deburr(expected.toLowerCase());
-                actual = this.deburr(actual.toLowerCase());
-                return expected === actual;
+                if (!Array.isArray(expected)) {
+                    expected = [expected];
+                }
+                return expected.some(expectedAnswer => {
+                    expectedAnswer = this.deburr(expectedAnswer.toLowerCase());
+                    actual = this.deburr(actual.toLowerCase());
+                    return expectedAnswer === actual;
+                });
             },
             proceed() {
                 this.answerWasCorrect = this.isCorrectAnswer(this.currentCapital, this.tryCapital);

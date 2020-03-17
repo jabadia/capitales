@@ -16,6 +16,10 @@ describe('Home.vue methods', () => {
         expect(wrapper.vm.isCorrectAnswer('París', 'pariss')).toBe(false);
         expect(wrapper.vm.isCorrectAnswer('París', '')).toBe(false);
     });
+    it('check (multiple) correct answers', () => {
+        expect(wrapper.vm.isCorrectAnswer(['Andorra la Vella', 'Andorra la Vieja'], 'andorra la vella')).toBe(true);
+        expect(wrapper.vm.isCorrectAnswer(['a', 'b'], 'c')).toBe(false);
+    });
     // it('renders props.msg when passed', () => {
     //     const msg = 'new message';
     //     const wrapper = shallowMount(Home, {
