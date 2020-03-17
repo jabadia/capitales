@@ -1,5 +1,5 @@
 <template>
-    <div>{{remaining}}</div>
+    <div class="text-4xl">{{remaining}}</div>
 </template>
 
 <script>
@@ -20,7 +20,7 @@
             },
             tick() {
                 this.remaining -= 1;
-                if (this.remaining === 0) {
+                if (this.remaining <= 0) {
                     clearInterval(this.timer);
                     this.$emit('end-time');
                 }
