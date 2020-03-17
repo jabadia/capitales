@@ -6,7 +6,7 @@
                 <div class="correct-score">Aciertos: {{correct}}</div>
                 <div class="wrong-score">Fallos: {{wrong}}</div>
             </div>
-            <countdown-timer :duration="10" :key="currentIndex" @end-time="countdownEnded"/>
+            <countdown-timer :duration="timerDuration" :key="currentIndex" @end-time="countdownEnded"/>
             <div>
                 <div
                     class="current-country border-2 border-gray-300 rounded-lg my-2 py-2 px-4 block w-full leading-normal text-center">
@@ -35,7 +35,7 @@
                         {{attempt.country}}
                     </td>
                     <td class="px-1 w-1/3">
-                        {{attempt.capital}}
+                        {{Array.isArray(attempt.capital) ? attempt.capital[0] : attempt.capital}}
                     </td>
                     <td class="px-1">
                         <span :class="attempt.answerWasCorrect? 'text-green' : 'text-red'">
@@ -65,6 +65,7 @@
             currentIndex: 0,
             answerWasCorrect: false,
             history: [],
+            timerDuration: 10,
         }),
         computed: {
             currentQuestion() {
@@ -105,6 +106,7 @@
                     } else {
                         this.wrong += 1;
                     }
+                    this.timerDuration = 10 + this.correct - this.wrong;
                     this.history.push({
                         index: this.currentIndex,
                         ...this.currentQuestion,
@@ -116,6 +118,7 @@
             reset() {
                 this.wrong = 0;
                 this.correct = 0;
+                this.timerDuration = 10;
                 this.history = [];
                 this.pickNextQuestion();
             },
