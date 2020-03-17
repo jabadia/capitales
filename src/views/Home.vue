@@ -66,11 +66,14 @@
             history: [],
         }),
         computed: {
+            currentQuestion() {
+                return CAPITALS[this.currentIndex];
+            },
             currentCountry() {
-                return CAPITALS[this.currentIndex].country;
+                return this.currentQuestion.country;
             },
             currentCapital() {
-                return CAPITALS[this.currentIndex].capital;
+                return this.currentQuestion.capital;
             },
             attempts() {
                 return this.correct + this.wrong;
@@ -100,7 +103,7 @@
                     }
                     this.history.push({
                         index: this.currentIndex,
-                        ...CAPITALS[this.currentIndex],
+                        ...this.currentQuestion,
                         answerWasCorrect: this.answerWasCorrect,
                     });
                     this.pickNextQuestion();
