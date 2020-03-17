@@ -103,16 +103,16 @@
                         ...CAPITALS[this.currentIndex],
                         answerWasCorrect: this.answerWasCorrect,
                     });
-                    this.pickRandom();
+                    this.pickNextQuestion();
                 }, DELAY);
             },
             reset() {
                 this.wrong = 0;
                 this.correct = 0;
                 this.history = [];
-                this.pickRandom();
+                this.pickNextQuestion();
             },
-            pickRandom() {
+            pickNextQuestion() {
                 do {
                     this.currentIndex = Math.floor(Math.random() * CAPITALS.length);
                 } while (this.history.map(attempt => attempt.index).includes(this.currentIndex));
@@ -125,7 +125,7 @@
         },
         components: {},
         mounted() {
-            this.pickRandom();
+            this.pickNextQuestion();
         },
     };
 </script>
