@@ -6,6 +6,7 @@
                 <div class="correct-score">Aciertos: {{correct}}</div>
                 <div class="wrong-score">Fallos: {{wrong}}</div>
             </div>
+            <countdown-timer :duration="10" :key="currentIndex" @end-time="countdownEnded"/>
             <div>
                 <div
                     class="current-country border-2 border-gray-300 rounded-lg my-2 py-2 px-4 block w-full leading-normal text-center">
@@ -50,7 +51,7 @@
 
 <script>
     // @ is an alias to /src
-    // import HelloWorld from '@/components/HelloWorld.vue';
+    import CountdownTimer from '@/components/CountdownTimer';
     import { CAPITALS } from '@/assets/capitals.const.js';
 
     const DELAY = 1500;
@@ -82,6 +83,9 @@
         methods: {
             deburr(s) {
                 return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            },
+            countdownEnded() {
+                this.proceed();
             },
             isCorrectAnswer(expected, actual) {
                 if (!Array.isArray(expected)) {
@@ -126,7 +130,9 @@
                 });
             },
         },
-        components: {},
+        components: {
+            CountdownTimer,
+        },
         mounted() {
             this.pickNextQuestion();
         },
