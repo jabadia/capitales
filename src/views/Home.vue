@@ -7,7 +7,10 @@
                 <div class="wrong-score">Fallos: {{wrong}}</div>
             </div>
             <div>
-                <div class="current-country border-2 border-gray-300 rounded-lg my-2 py-2 px-4 block w-full leading-normal text-center">{{currentCountry}}</div>
+                <div
+                    class="current-country border-2 border-gray-300 rounded-lg my-2 py-2 px-4 block w-full leading-normal text-center">
+                    {{currentCountry}}
+                </div>
                 <div>
                     <input
                         class="bg-white focus:outline-none focus:shadow-outline border-2 border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal text-center"
