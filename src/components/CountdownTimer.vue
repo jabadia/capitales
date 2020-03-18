@@ -1,22 +1,37 @@
 <template>
-    <div class="text-4xl">{{remaining}}</div>
+    <div class="p-4 text-4xl text-center">{{remaining}}</div>
 </template>
 
 <script>
     export default {
         props: {
             duration: Number,
+            paused: Boolean,
         },
         data() {
             return {
                 remaining: 0,
-                timer: null,
             };
+        },
+        watch: {
+            paused: {
+                handler(newPaused) {
+                    const running = !newPaused;
+                    if (running) {
+                        this.start();
+                    } else {
+                        this.pause();
+                    }
+                },
+                immediate: true,
+            },
         },
         methods: {
             start() {
-                this.remaining = this.duration;
                 this.timer = setInterval(this.tick, 1000);
+            },
+            pause() {
+                clearInterval(this.timer);
             },
             tick() {
                 this.remaining -= 1;
@@ -27,7 +42,8 @@
             },
         },
         mounted() {
-            this.start();
+            this.remaining = this.duration;
+            // this.start();
         },
         beforeDestroy() {
             clearInterval(this.timer);
