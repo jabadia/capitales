@@ -1,50 +1,58 @@
 <template>
-    <div class="flex flex-row w-full">
-        <div class="p-2 w-1/2">
-            <div>
-                <div>Intentos: {{attempts}}</div>
-                <div class="correct-score">Aciertos: {{correct}}</div>
-                <div class="wrong-score">Fallos: {{wrong}}</div>
-            </div>
-            <countdown-timer :duration="timerDuration" :key="currentIndex" @end-time="countdownEnded"/>
-            <div>
-                <div
-                    class="current-country border-2 border-gray-300 rounded-lg my-2 py-2 px-4 block w-full leading-normal text-center">
-                    {{currentCountry}}
-                </div>
+    <div>
+        <div class="flex flex-row w-full">
+            <div class="p-2 w-1/2">
                 <div>
-                    <input
-                        class="bg-white focus:outline-none focus:shadow-outline border-2 border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal text-center"
-                        type="text" @keyup.enter="proceed" v-model='tryCapital' ref="theInput"/>
+                    <div>Intentos: {{attempts}}</div>
+                    <div class="correct-score">Aciertos: {{correct}}</div>
+                    <div class="wrong-score">Fallos: {{wrong}}</div>
+                </div>
+                <countdown-timer :paused="paused" :duration="timerDuration" :key="currentIndex" @end-time="countdownEnded"/>
+                <div>
+                    <div
+                        class="current-country border-2 border-gray-300 rounded-lg my-2 py-2 px-4 block w-full leading-normal text-center text-xl">
+                        {{currentCountry}}
+                    </div>
+                    <div>
+                        <input
+                            class="bg-white focus:outline-none focus:shadow-outline border-2 border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal text-center text-xl"
+                            type="text" @keyup.enter="proceed" v-model='tryCapital' ref="theInput"/>
+                    </div>
+                </div>
+                <div v-if="answerWasCorrect !== undefined" class="text-center py-2">
+                    <div class="correct-answer text-green" v-if="answerWasCorrect === true">¡Correcto!</div>
+                    <div class="wrong-answer text-red" v-if="answerWasCorrect === false">¡Incorrecto! era {{ currentCapital }}</div>
+                </div>
+                <div v-else class="text-center">
+                    <button class="btn btn-blue m-2" @click="proceed">Aceptar</button>
+                    <button class="btn btn-blue m-2" @click="reset">Volver a Empezar</button>
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-blue m-2" @click="paused = !paused">Pausa</button>
                 </div>
             </div>
-            <div v-if="answerWasCorrect !== undefined" class="text-center py-2">
-                <div class="correct-answer text-green" v-if="answerWasCorrect === true">¡Correcto!</div>
-                <div class="wrong-answer text-red" v-if="answerWasCorrect === false">¡Incorrecto! era {{ currentCapital }}</div>
-            </div>
-            <div v-else class="text-center">
-                <button class="btn btn-blue m-2" @click="proceed">Aceptar</button>
-                <button class="btn btn-blue m-2" @click="reset">Volver a Empezar</button>
+            <div class="py-2 px-8 w-1/2">
+                <table class="border-collapse table-fixed w-full">
+                    <tbody>
+                    <tr class="py-1" v-for="attempt in history" :key="attempt.country">
+                        <td class="px-1 w-1/3">
+                            {{attempt.country}}
+                        </td>
+                        <td class="px-1 w-1/3">
+                            {{Array.isArray(attempt.capital) ? attempt.capital[0] : attempt.capital}}
+                        </td>
+                        <td class="px-1">
+                            <span :class="attempt.answerWasCorrect? 'text-green' : 'text-red'">
+                                {{attempt.answerWasCorrect ? '✔' : '✖' }}
+                            </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
-        <div class="py-2 px-8 w-1/2">
-            <table class="border-collapse table-fixed w-full">
-                <tbody>
-                <tr class="py-1" v-for="attempt in history" :key="attempt.country">
-                    <td class="px-1 w-1/3">
-                        {{attempt.country}}
-                    </td>
-                    <td class="px-1 w-1/3">
-                        {{Array.isArray(attempt.capital) ? attempt.capital[0] : attempt.capital}}
-                    </td>
-                    <td class="px-1">
-                        <span :class="attempt.answerWasCorrect? 'text-green' : 'text-red'">
-                            {{attempt.answerWasCorrect ? '✔' : '✖' }}
-                        </span>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+        <div v-if="paused" class="flex fixed pin bg-grey items-center justify-center">
+            <button class="btn btn-blue m-2" @click="paused = !paused">Reanudar</button>
         </div>
     </div>
 </template>
@@ -55,6 +63,8 @@
     import { CAPITALS } from '@/assets/capitals.const.js';
 
     const DELAY = 1500;
+    const MAX_MISTAKES = 5;
+    const TARGET = 10;
 
     export default {
         name: 'Home',
@@ -66,6 +76,7 @@
             answerWasCorrect: false,
             history: [],
             timerDuration: 10,
+            paused: false,
         }),
         computed: {
             currentQuestion() {
@@ -105,6 +116,16 @@
                         this.correct += 1;
                     } else {
                         this.wrong += 1;
+                    }
+                    if (this.wrong >= MAX_MISTAKES) {
+                        // TODO: message to say you lost
+                        this.reset();
+                        return;
+                    }
+                    if (this.correct >= TARGET) {
+                        // TODO: message to say you won
+                        this.reset();
+                        return;
                     }
                     this.timerDuration = 10 + this.correct - this.wrong;
                     this.history.push({
