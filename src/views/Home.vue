@@ -62,6 +62,7 @@
                 <span v-if="firstTime">Empezar</span>
                 <span v-else>Reanudar</span>
             </button>
+            <button v-if="!firstTime" class="btn btn-blue m-2" @click="reset">Volver a Empezar</button>
         </div>
     </div>
 </template>
@@ -156,6 +157,7 @@
                 this.correct = 0;
                 this.timerDuration = 10;
                 this.history = [];
+                this.paused = false;
                 this.pickNextQuestion();
             },
             resume() {
