@@ -21,6 +21,7 @@
                     </div>
                     <div>
                         <input
+                            placeholder="capital"
                             class="bg-white focus:outline-none focus:shadow-outline border-2 border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal text-center text-xl"
                             type="text" @keyup.enter="proceed" v-model='tryCapital' ref="theInput"/>
                     </div>
@@ -34,7 +35,7 @@
                     <button class="btn btn-blue m-2" @click="reset">Volver a Empezar</button>
                 </div>
                 <div class="text-center">
-                    <button class="btn btn-blue m-2" @click="paused = !paused">Pausa</button>
+                    <button class="btn btn-blue m-2" @click="paused=true">Pausa</button>
                 </div>
             </div>
             <div class="py-2 px-8 w-1/2">
@@ -161,8 +162,11 @@
                 this.pickNextQuestion();
             },
             resume() {
-                this.paused = !this.paused;
+                this.paused = false;
                 this.firstTime = false;
+                this.$nextTick(() => {
+                    this.$refs.theInput.focus();
+                });
             },
             pickNextQuestion() {
                 do {
