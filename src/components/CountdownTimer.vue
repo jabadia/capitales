@@ -35,6 +35,7 @@
             },
             tick() {
                 this.remaining -= 1;
+                this.$emit('tick', this.remaining);
                 if (this.remaining <= 0) {
                     clearInterval(this.timer);
                     this.$emit('end-time');

@@ -7,7 +7,13 @@
                     <div class="correct-score">Aciertos: {{correct}}</div>
                     <div class="wrong-score">Fallos: {{wrong}}</div>
                 </div>
-                <countdown-timer :paused="paused" :duration="timerDuration" :key="currentIndex" @end-time="countdownEnded"/>
+                <countdown-timer
+                    :paused="paused"
+                    :duration="timerDuration"
+                    :key="currentIndex"
+                    @end-time="countdownEnded"
+                    @tick="timerTick"
+                />
                 <div>
                     <div
                         class="current-country border-2 border-gray-300 rounded-lg my-2 py-2 px-4 block w-full leading-normal text-center text-xl">
@@ -97,7 +103,12 @@
                 return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
             },
             countdownEnded() {
-                this.proceed();
+                // this.proceed();
+                // TODO: message to say you lost
+                this.reset();
+            },
+            timerTick(remaining) {
+                this.timerDuration = remaining;
             },
             isCorrectAnswer(expected, actual) {
                 if (!Array.isArray(expected)) {
@@ -127,7 +138,7 @@
                         this.reset();
                         return;
                     }
-                    this.timerDuration = 10 + this.correct - this.wrong;
+                    this.timerDuration += 10; // + this.correct - this.wrong;
                     this.history.push({
                         index: this.currentIndex,
                         ...this.currentQuestion,
