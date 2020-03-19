@@ -104,6 +104,7 @@
                 // this.proceed();
                 // TODO: message to say you lost
                 this.reset();
+                this.paused = true;
             },
             timerTick(remaining) {
                 this.timerDuration = remaining;
@@ -129,11 +130,13 @@
                     if (this.wrong >= MAX_MISTAKES) {
                         // TODO: message to say you lost
                         this.reset();
+                        this.paused = true;
                         return;
                     }
                     if (this.correct >= TARGET) {
                         // TODO: message to say you won
                         this.reset();
+                        this.paused = true;
                         return;
                     }
                     this.timerDuration += 10; // + this.correct - this.wrong;
