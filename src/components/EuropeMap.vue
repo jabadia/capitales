@@ -1,5 +1,5 @@
 <template>
-    <svg class="europe-map-svg"
+    <svg class="europe-map-svg" style="max-height: 50vh;"
          viewBox="1754 161 9938 7945" version="1.0" id="svg2"
     >
         <title id="title4">116 000 map of Europe</title>
