@@ -92,9 +92,6 @@
             currentCountryCode() {
                 return this.currentQuestion.code;
             },
-            attempts() {
-                return this.correct + this.wrong;
-            },
         },
         methods: {
             deburr(s) {
@@ -113,9 +110,9 @@
                 if (!Array.isArray(expected)) {
                     expected = [expected];
                 }
+                actual = this.deburr(actual.toLowerCase().trim());
                 return expected.some(expectedAnswer => {
                     expectedAnswer = this.deburr(expectedAnswer.toLowerCase());
-                    actual = this.deburr(actual.toLowerCase());
                     return expectedAnswer === actual;
                 });
             },
