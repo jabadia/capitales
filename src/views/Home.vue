@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="bg-blue-lighter h-screen">
         <div class="flex flex-row flex-wrap w-full">
             <europe-map class="w-full md:w-1/2" :selected-country="currentCountryCode" />
             <div class="flex-1 text-right">
@@ -22,7 +22,7 @@
                 />
                 <div>
                     <div
-                        class="current-country border-2 border-gray-300 rounded-lg my-2 py-2 px-4 block w-full leading-normal text-center text-xl">
+                        class="current-country bg-white border-2 border-gray-300 rounded-lg my-2 py-2 px-4 block w-full leading-normal text-center text-xl">
                         {{currentCountry}}
                     </div>
                     <div>
