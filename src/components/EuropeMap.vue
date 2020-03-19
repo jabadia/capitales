@@ -169,7 +169,7 @@
                     this.$nextTick(() => {
                         this.$el.querySelectorAll('path.europe').forEach(node => {
                             node.style.fill = node.id.startsWith(this.selectedCountry)
-                                ? 'cyan'
+                                ? '#9dffff'
                                 : 'white';
                         });
                     });
@@ -197,7 +197,7 @@
     }
 
     .europe-map-svg #ocean {
-        fill: #0d0fed;
+        fill: #080857;
     }
 
 </style>
