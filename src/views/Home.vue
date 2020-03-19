@@ -1,14 +1,17 @@
 <template>
     <div>
-        <div>
-            <europe-map :selected-country="currentCountryCode" />
+        <div class="flex flex-row flex-wrap w-full">
+            <europe-map class="w-full md:w-1/2" :selected-country="currentCountryCode" />
+            <div class="flex-1 text-right">
+                <button class="btn btn-blue m-2" @click="paused=true">Pausa</button>
+            </div>
         </div>
-        <div class="flex flex-row w-full">
-            <div class="p-2 w-1/2">
-                <div>
-                    <div>Intentos: {{attempts}}</div>
-                    <div class="correct-score">Aciertos: {{correct}}</div>
-                    <div class="wrong-score">Fallos: {{wrong}}</div>
+        <div class="flex flex-row w-full flex-wrap">
+            <div class="p-2 w-full md:w-1/2">
+                <div class="flex flex-row w-full">
+                    <span class="flex-1 text-center">Intentos: {{attempts}}</span>
+                    <span class="flex-1 text-center correct-score">Aciertos: {{correct}}</span>
+                    <span class="flex-1 text-center wrong-score">Fallos: {{wrong}}</span>
                 </div>
                 <countdown-timer
                     :paused="paused"
@@ -37,11 +40,8 @@
                     <button class="btn btn-blue m-2" @click="proceed">Aceptar</button>
                     <button class="btn btn-blue m-2" @click="reset">Volver a Empezar</button>
                 </div>
-                <div class="text-center">
-                    <button class="btn btn-blue m-2" @click="paused=true">Pausa</button>
-                </div>
             </div>
-            <div class="py-2 px-8 w-1/2">
+            <div class="p-2 w-full md:w-1/2">
                 <history-table :history="history"/>
             </div>
         </div>
