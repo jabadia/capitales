@@ -58,7 +58,10 @@
             </div>
         </div>
         <div v-if="paused" class="flex fixed pin bg-grey items-center justify-center">
-            <button class="btn btn-blue m-2" @click="paused = !paused">Reanudar</button>
+            <button class="btn btn-blue m-2" @click="resume">
+                <span v-if="firstTime">Empezar</span>
+                <span v-else>Reanudar</span>
+            </button>
         </div>
     </div>
 </template>
@@ -82,7 +85,8 @@
             answerWasCorrect: false,
             history: [],
             timerDuration: 10,
-            paused: false,
+            paused: true,
+            firstTime: true,
         }),
         computed: {
             currentQuestion() {
@@ -153,6 +157,10 @@
                 this.timerDuration = 10;
                 this.history = [];
                 this.pickNextQuestion();
+            },
+            resume() {
+                this.paused = !this.paused;
+                this.firstTime = false;
             },
             pickNextQuestion() {
                 do {
