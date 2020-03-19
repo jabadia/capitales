@@ -39,23 +39,7 @@
                 </div>
             </div>
             <div class="py-2 px-8 w-1/2">
-                <table class="border-collapse table-fixed w-full">
-                    <tbody>
-                    <tr class="py-1" v-for="attempt in history" :key="attempt.country">
-                        <td class="px-1 w-1/3">
-                            {{attempt.country}}
-                        </td>
-                        <td class="px-1 w-1/3">
-                            {{Array.isArray(attempt.capital) ? attempt.capital[0] : attempt.capital}}
-                        </td>
-                        <td class="px-1">
-                            <span :class="attempt.answerWasCorrect? 'text-green' : 'text-red'">
-                                {{attempt.answerWasCorrect ? '✔' : '✖' }}
-                            </span>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                <history-table :history="history"/>
             </div>
         </div>
         <div v-if="paused" class="flex fixed pin bg-grey items-center justify-center">
@@ -71,6 +55,7 @@
 <script>
     // @ is an alias to /src
     import CountdownTimer from '@/components/CountdownTimer';
+    import HistoryTable from '@/components/HistoryTable';
     import { CAPITALS } from '@/assets/capitals.const.js';
 
     const DELAY = 1500;
@@ -180,6 +165,7 @@
             },
         },
         components: {
+            HistoryTable,
             CountdownTimer,
         },
         mounted() {
