@@ -9,7 +9,7 @@
         <div class="flex flex-row w-full flex-wrap">
             <div class="p-2 w-full md:w-1/2">
                 <div class="flex flex-row w-full">
-                    <span class="flex-1 text-center">Intentos: {{attempts}}</span>
+                    <!--<span class="flex-1 text-center">Intentos: {{attempts}}</span>-->
                     <span class="flex-1 text-center correct-score">Aciertos: {{correct}}</span>
                     <span class="flex-1 text-center wrong-score">Fallos: {{wrong}}</span>
                 </div>
