@@ -1,5 +1,8 @@
 <template>
     <div>
+        <div>
+            <europe-map :selected-country="currentCountryCode" />
+        </div>
         <div class="flex flex-row w-full">
             <div class="p-2 w-1/2">
                 <div>
@@ -56,6 +59,7 @@
     // @ is an alias to /src
     import CountdownTimer from '@/components/CountdownTimer';
     import HistoryTable from '@/components/HistoryTable';
+    import EuropeMap from '@/components/EuropeMap';
     import { CAPITALS } from '@/assets/capitals.const.js';
 
     const DELAY = 1500;
@@ -84,6 +88,9 @@
             },
             currentCapital() {
                 return this.currentQuestion.capital;
+            },
+            currentCountryCode() {
+                return this.currentQuestion.code;
             },
             attempts() {
                 return this.correct + this.wrong;
@@ -165,6 +172,7 @@
             },
         },
         components: {
+            EuropeMap,
             HistoryTable,
             CountdownTimer,
         },
