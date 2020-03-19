@@ -1,5 +1,5 @@
 <template>
-    <table class="border-collapse table-fixed w-2/5">
+    <table class="border-collapse table-fixed w-full">
         <tbody>
         <tr class="py-1" v-for="attempt in history" :key="attempt.country">
             <td class="px-1 w-2/5">
