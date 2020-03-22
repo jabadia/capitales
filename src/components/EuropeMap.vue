@@ -1,7 +1,7 @@
 <template>
     <div style="background-color: #080857">
-    <svg class="europe-map-svg" style="max-height: 50vh;"
-         :viewBox="viewBox" version="1.0" id="svg2"
+    <svg ref="svgRoot" class="europe-map-svg" style="max-height: 50vh;"
+         viewBox="1754 161 9938 7945" version="1.0" id="svg2"
     >
         <title id="title4">Mapa de Europa</title>
         <rect y="162.74684" x="-340.6582" height="7934.9712" width="12386.153" id="ocean"/>
@@ -160,6 +160,8 @@
     </div>
 </template>
 <script>
+    import { gsap } from 'gsap';
+
     export default {
         name: 'europe-map',
         props: {
@@ -178,7 +180,7 @@
                         this.$el.querySelectorAll('path.europe').forEach(node => {
                             const selected = node.id.startsWith(this.selectedCountry);
                             node.style.fill = selected
-                                ? 'yellow' // '#9dffff'
+                                ? '#9dffff'
                                 : 'white';
 
                             if (selected) {
@@ -192,7 +194,13 @@
                                 bbox.y -= bbox.height * margin;
                                 bbox.width *= (1 + 2 * margin);
                                 bbox.height *= (1 + 2 * margin);
-                                this.viewBox = `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`;
+                                // this.viewBox = `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`;
+                                gsap.to(this.$refs.svgRoot, {
+                                    duration: 1,
+                                    attr: {
+                                        viewBox: `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`,
+                                    },
+                                });
                             }
                         });
                     });
