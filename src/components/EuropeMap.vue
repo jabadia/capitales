@@ -1,6 +1,6 @@
 <template>
     <div style="background-color: #080857">
-    <svg ref="svgRoot" class="europe-map-svg" style="max-height: 50vh;"
+    <svg ref="svgRoot" class="europe-map-svg block" style="height: 50vh; width: 100%;"
          viewBox="1754 161 9938 7945" version="1.0" id="svg2"
     >
         <title id="title4">Mapa de Europa</title>
