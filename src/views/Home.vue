@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-blue-lighter h-screen">
+    <div class="home bg-blue-lighter h-screen text-grey-darkest">
         <div class="flex flex-row flex-wrap w-full">
             <europe-map class="w-full md:w-1/2" :selected-country="currentCountryCode" />
             <div class="flex-1 text-right">
@@ -209,6 +209,9 @@
 </script>
 
 <style>
+    .home {
+        font-family: 'Cabin', sans-serif;
+    }
     .btn-blue {
         @apply bg-blue text-white font-bold py-2 px-4 rounded
     }
