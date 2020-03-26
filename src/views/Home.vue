@@ -3,7 +3,7 @@
         <div class="flex flex-row flex-wrap w-full">
             <europe-map class="w-full md:w-1/2" :selected-country="currentCountryCode" />
             <div class="flex-1 text-right">
-                <button class="btn btn-blue m-2" @click="paused=true">Pausa</button>
+                <button class="btn btn-blue m-2" @click="pause()">Pausa</button>
             </div>
         </div>
         <div class="flex flex-row w-full flex-wrap">
@@ -45,30 +45,45 @@
                 <history-table :history="history"/>
             </div>
         </div>
-        <div v-if="paused" class="flex fixed pin bg-grey items-center justify-center">
+        <div v-if="paused" class="flex flex-col fixed pin bg-grey items-center ">
+            <div class="flex-grow flex items-center justify-center w-full">
+                <h2 class="w-3/4 text-center">
+                    <span v-if="firstTime">Tienes que acertar 10 capitales lo más rápido posible.<br><br>¡Solo se admiten 3 fallos!</span>
+                    <span v-else>{{lastOutcome[0]}}<br>{{lastOutcome[1]}}</span>
+                </h2>
+            </div>
+            <div class="flex justify-center">
             <button class="btn btn-blue m-2" @click="resume">
                 <span v-if="firstTime">Empezar</span>
                 <span v-else>Reanudar</span>
             </button>
             <button v-if="!firstTime" class="btn btn-blue m-2" @click="reset">Volver a Empezar</button>
+            </div>
+            <div class="flex-grow"/>
         </div>
     </div>
 </template>
 
 <script>
+    // TODO: better appearance
+    // TODO: instructions and you won, you lost messages
+    // TODO: keep track of scores (in local storage)
+    // TODO: ask your name?
+
     // @ is an alias to /src
     import CountdownTimer from '@/components/CountdownTimer';
     import HistoryTable from '@/components/HistoryTable';
     import EuropeMap from '@/components/EuropeMap';
-    import { CAPITALS } from '@/assets/capitals.const.js';
+    import { CAPITALS } from '@/assets/capitals.const';
 
     const DELAY = 1500;
-    const MAX_MISTAKES = 5;
+    const MAX_MISTAKES = 3;
     const TARGET = 10;
 
     export default {
         name: 'Home',
         data: () => ({
+            // TODO: instead of counting failures, let's have a number of "lives" and substract from that until we get to 0
             correct: 0,
             wrong: 0,
             tryCapital: '',
@@ -78,6 +93,7 @@
             timerDuration: 10,
             paused: true,
             firstTime: true,
+            lastOutcome: '',
         }),
         computed: {
             currentQuestion() {
@@ -100,6 +116,7 @@
             countdownEnded() {
                 // this.proceed();
                 // TODO: message to say you lost
+                this.lastOutcome = ['¡Se acabó el tiempo! ¡Has perdido!', '¿Quiéres volver a intentarlo?'];
                 this.reset();
                 this.paused = true;
             },
@@ -121,22 +138,27 @@
                 setTimeout(() => {
                     if (this.answerWasCorrect) {
                         this.correct += 1;
+                        this.timerDuration += 10; // + this.correct - this.wrong;
                     } else {
                         this.wrong += 1;
+                        this.timerDuration += 5; // + this.correct - this.wrong;
                     }
                     if (this.wrong >= MAX_MISTAKES) {
-                        // TODO: message to say you lost
+                        this.lastOutcome = ['¡Demasiados fallos, has perdido!', '¿Quiéres volver a intentarlo?'];
                         this.reset();
                         this.paused = true;
                         return;
                     }
                     if (this.correct >= TARGET) {
                         // TODO: message to say you won
+                        this.lastOutcome = [
+                            `¡Enhorabuena, Buen Trabajo! Te han sobrado ${this.timerDuration} segundos`,
+                            '¿Otro intento?',
+                        ];
                         this.reset();
                         this.paused = true;
                         return;
                     }
-                    this.timerDuration += 10; // + this.correct - this.wrong;
                     this.history.push({
                         index: this.currentIndex,
                         ...this.currentQuestion,
@@ -144,6 +166,10 @@
                     });
                     this.pickNextQuestion();
                 }, DELAY);
+            },
+            pause() {
+                this.lastOutcome = '';
+                this.paused = true;
             },
             reset() {
                 this.wrong = 0;
